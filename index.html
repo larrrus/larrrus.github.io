@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Frases Mágicas</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #ffc0cb;
+      background-image: url('https://i.imgur.com/Q1dUvU4.png'); /* fondo con corazones */
+      background-size: 150px;
+      background-repeat: repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    #frase {
+      font-size: 24px;
+      color: #8b005d;
+      margin-top: 40px;
+      max-width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <h1>💌 Frases mágicas 💌</h1>
+  <button onclick="mostrarFrase()">Mostrar una frase</button>
+  <div id="frase"></div>
+
+  <script>
+    const frases = [
+      "Te amo",
+  "Uy me tiré un pedo",
+  "Está re lindo el día, viste?",
+  "Que ganas de tomar unos mates con vos",
+  "Te extraño",
+  "Me gustan mucho tus abrazos",
+  "Sos re lindo",
+  "Soñé con vos",
+  "Me da ternura cómo hablás",
+  "Quiero dormir la siesta abrazada a vos",
+  "Me das paz",
+  "Estás en todas mis playlists",
+  "Me hacés bien",
+  "Ojalá estuvieras acá",
+  "Me haces reír hasta cuando estoy triste",
+  "Me hace feliz que existas",
+  "Hoy vi algo y pensé en vos",
+  "Tengo antojo de vos",
+  "Sos como un bizcochito recién horneado",
+  "Te invitaría a ver los Simpson y abrazarnos",
+  "Me hacés sentir como si todo fuera posible",
+  "Quiero cocinarte algo rico",
+  "Me das ganas de hacer cosas buenas",
+  "Me hacés falta",
+  "Me re gustás, no sé si te lo dije hoy",
+  "Me das calorcito en el pecho",
+  "Ojalá pudiera darte un beso ahora",
+  "Sos un sol con piernas",
+  "Me haces olvidar que el mundo está medio feo",
+  "Qué bueno que te conozco",
+  "Sos como una mantita en invierno",
+  "No me canso de hablar con vos",
+  "A veces me dan ganas de llorar de lo mucho que te quiero",
+  "Estás en mi top 1 de cosas favoritas",
+  "Sos mi lugar seguro",
+  "Te llevaría en una mochila a todos lados",
+  "Me encanta cuando decís pavadas",
+  "Sos mi persona preferida para existir",
+  "Me hacés sentir suave",
+  "Si fueras un color, serías el más lindo",
+  "Quiero reírme con vos hasta que nos duela la panza",
+  "Sos mi emoji favorito",
+  "Me haces sentir como si estuviera en casa",
+  "Pensarte me cambia el día",
+  "Sos tan abrazable que no sé cómo no sos un peluche",
+  "Me das ganas de bailar sin razón",
+  "Te quiero hasta cuando no estás",
+  "Sos más lindo que el cielo rosa",
+  "No existe otra persona como vos"
+    ];
+
+    function mostrarFrase() {
+      const frase = frases[Math.floor(Math.random() * frases.length)];
+      document.getElementById("frase").innerText = frase;
+    }
+  </script>
+</body>
+</html>
