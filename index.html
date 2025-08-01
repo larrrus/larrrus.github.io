@@ -9,7 +9,7 @@
       padding: 0;
       font-family: 'Arial', sans-serif;
       background-color: #ffc0cb;
-      background-image: url('https://i.imgur.com/wqYqSvE.gif'); /* fondo con corazones */
+      background-image: url('https://i.imgur.com/wqYqSvE.gif');
       background-size: 150px;
       background-repeat: repeat;
       display: flex;
@@ -37,27 +37,30 @@
       background-color: #ff1493;
     }
 
-    #frase {
-      font-size: 24px;
-      color: #8b005d;
+    #frase-container {  /* Contenedor añadido para mejor control */
       margin-top: 40px;
       max-width: 80%;
     }
 
-    /* Estilo para el fondo gris detrás del texto */
-    #frase span {
-      background-color: rgba(200, 200, 200, 0.7); /* Gris claro con transparencia */
-      padding: 10px 20px;
+    #frase {  /* Este es el estilo del fondo gris */
+      font-size: 24px;
+      color: #8b005d;
+      background-color: rgba(220, 220, 220, 0.8);
+      padding: 15px 25px;
       border-radius: 15px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: inline-block; /* Para que el fondo no ocupe todo el ancho */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: inline-block;
+      min-width: 50px; /* Para que no colapse cuando está vacío */
     }
   </style>
 </head>
 <body>
   <h1>💌 Frases mágicas 💌</h1>
-  <button onclick="mostrarFrase()">Clickeame bebé</button>
-  <div id="frase"><span></span></div> <!-- Aquí se insertará la frase -->
+  <button onclick="mostrarFrase()">Mostrar una frase</button>
+  <div id="frase-container">
+    <div id="frase"></div> <!-- Ahora el fondo está en este div -->
+  </div>
+
   <script>
     const frases = [
       "Te amo",
@@ -112,10 +115,14 @@
     ];
 
 
+  
     function mostrarFrase() {
       const frase = frases[Math.floor(Math.random() * frases.length)];
-      document.querySelector("#frase span").innerText = frase; // Cambiado para apuntar al <span>
+      document.getElementById("frase").innerText = frase;
     }
+
+    // Mostrar una frase al cargar la página (opcional)
+    window.onload = mostrarFrase;
   </script>
 </body>
 </html>
