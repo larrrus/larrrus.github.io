@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Frases Mágicas</title>
-
   <style>
-
     h1 {
-      background-color: #FF9FF3; /* Rosa Barbie */
+      background-color: #FF9FF3;
       padding: 15px 30px;
-      border-radius: 50px; /* Bordes muy redondeados */
+      border-radius: 50px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      color: white; /* Texto en blanco para mejor contraste */
-      display: inline-block; /* Para que el fondo no ocupe todo el ancho */
-      margin-bottom: 20px; /* Espacio debajo del título */
+      color: white;
+      display: inline-block;
+      margin-bottom: 20px;
     }
     
     body {
@@ -49,20 +47,31 @@
       background-color: #ff1493;
     }
 
-    #frase-container {  /* Contenedor añadido para mejor control */
+    #frase-container {
       margin-top: 40px;
       max-width: 80%;
     }
 
-    #frase {  /* Este es el estilo del fondo gris */
+    #frase {
       font-size: 24px;
       color: #8b005d;
       background-color: rgba(220, 220, 220, 0.8);
       padding: 15px 25px;
       border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       display: inline-block;
-      min-width: 50px; /* Para que no colapse cuando está vacío */
+      min-width: 50px;
+    }
+
+    /* Estilos para el contador de días */
+    #contador-dias {
+      font-size: 20px;
+      color: #8b005d;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: inline-block;
     }
   </style>
 </head>
@@ -126,15 +135,27 @@
   "No existe otra persona como vos"
     ];
 
-
-  
+  // Función para mostrar frases aleatorias
     function mostrarFrase() {
       const frase = frases[Math.floor(Math.random() * frases.length)];
       document.getElementById("frase").innerText = frase;
     }
 
-    // Mostrar una frase al cargar la página (opcional)
-    window.onload = mostrarFrase;
+  // Función para calcular días desde una fecha especial
+    function actualizarContador() {
+      const fechaInicio = new Date('2022-01-7'); // ¡Cambia esta fecha por tu fecha especial!
+      const hoy = new Date();
+      const diferencia = hoy - fechaInicio;
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      
+      document.getElementById("contador-dias").innerText = `❤️ ${dias} días juntos ❤️`;
+    }
+
+    // Inicializar
+    window.onload = function() {
+      mostrarFrase();
+      actualizarContador();
+    };
   </script>
 </body>
 </html>
