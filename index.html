@@ -44,7 +44,7 @@
       max-width: 80%;
     }
 
-  /* Estilo para el fondo gris detrás del texto */
+    /* Estilo para el fondo gris detrás del texto */
     #frase span {
       background-color: rgba(200, 200, 200, 0.7); /* Gris claro con transparencia */
       padding: 10px 20px;
@@ -52,14 +52,12 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       display: inline-block; /* Para que el fondo no ocupe todo el ancho */
     }
-  
   </style>
 </head>
 <body>
   <h1>💌 Frases mágicas 💌</h1>
-  <button onclick="mostrarFrase()">Mostrar una frase</button>
-  <div id="frase"></div>
-
+  <button onclick="mostrarFrase()">Clickeame bebé</button>
+  <div id="frase"><span></span></div> <!-- Aquí se insertará la frase -->
   <script>
     const frases = [
       "Te amo",
@@ -113,9 +111,10 @@
   "No existe otra persona como vos"
     ];
 
+
     function mostrarFrase() {
       const frase = frases[Math.floor(Math.random() * frases.length)];
-      document.getElementById("frase").innerText = frase;
+      document.querySelector("#frase span").innerText = frase; // Cambiado para apuntar al <span>
     }
   </script>
 </body>
