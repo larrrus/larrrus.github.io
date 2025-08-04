@@ -33,7 +33,6 @@
     button {
       padding: 15px 30px;
       font-size: 18px;
-      background-color: #ff69b4;
       color: white;
       border: none;
       border-radius: 25px;
@@ -44,7 +43,7 @@
     }
 
     button:hover {
-      background-color: #ff1493;
+      opacity: 0.9;
     }
 
     #frase-container {
@@ -63,7 +62,6 @@
       min-width: 50px;
     }
 
-    /* Estilos para el contador de días */
     #contador-dias {
       font-size: 20px;
       color: #8b005d;
@@ -73,85 +71,104 @@
       margin-top: 20px;
       display: inline-block;
     }
+
+    /* Botón SORPRENDETE */
+    #sorprendeteBtn {
+      background-color: #006400; /* verde oscuro */
+      margin-top: 10px;
+    }
+
+    /* Pantalla completa de imagen */
+    #imagenContainer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #imagenContainer img {
+      max-width: 100%;
+      max-height: 100%;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>💌 Frases mágicas para miamorcito💌</h1>
-  <button onclick="mostrarFrase()">Clickea acá bebé </button>
+
+  <button onclick="mostrarFrase()">Clickea acá bebé</button>
+  <button id="sorprendeteBtn">SORPRENDETE</button>
+
   <div id="frase-container">
-    <div id="frase"></div> <!-- Ahora el fondo está en este div -->
+    <div id="frase"></div>
   </div>
-<div id="contador-dias"></div>
+
+  <div id="contador-dias"></div>
+
+  <div id="imagenContainer" onclick="cerrarImagen()">
+    <img id="imagenAleatoria" src="" alt="Imagen aleatoria">
+  </div>
+
   <script>
     const frases = [
-      "Te amo",
-  "Uy me tiré un pedo",
-  "Está re lindo el día, viste?",
-  "Que ganas de tomar unos mates con vos",
-  "Te extraño",
-  "Me gustan mucho tus abrazos",
-  "Sos re lindo",
-  "Soñé con vos",
-  "Me da ternura cómo hablás",
-  "Quiero dormir la siesta abrazada a vos",
-  "Me das paz",
-  "Estás en todas mis playlists",
-  "Me hacés bien",
-  "Ojalá estuvieras acá",
-  "Me haces reír hasta cuando estoy triste",
-  "Me hace feliz que existas",
-  "Hoy vi algo y pensé en vos",
-  "Tengo antojo de vos",
-  "Sos como una torta frita recién salida de freirse :D",
-  "Te invitaría a ver los Simpson y abrazarnos",
-  "Me hacés sentir como si todo fuera posible",
-  "Quiero cocinarte algo rico",
-  "Me das ganas de hacer cosas prohibidas con vos",
-  "Me encanta jugar al pool con vos",
-  "Me re gustás, no sé si te lo dije hoy",
-  "Me das calorcito en el pecho",
-  "Ojalá pudiera darte un beso ahora",
-  "Sos un sol con piernas (este lo inventó chatgpt)",
-  "Que ganas de que comamos locro",
-  "Unas ganas de que recorramos la patagonia en el azulejo",
-  "Sos como una mantita en invierno",
-  "No me canso de hablar con vos",
-  "A veces me dan ganas de llorar de lo mucho que te quiero",
-  "Estás en mi top 1 de cosas favoritas",
-  "Sos mi lugar seguro",
-  "Te llevaría en una mochila a todos lados",
-  "Me encanta cuando decís pavadas",
-  "Sos mi persona preferida para existir",
-  "Me hacés sentir suave",
-  "Si fueras un color, serías el más lindo",
-  "Quiero reírme con vos hasta que nos duela la panza",
-  "Sos mi casita",
-  "Me haces sentir como si estuviera en casa",
-  "Pensarte me cambia el día",
-  "Sos tan abrazable que no sé cómo no sos un peluche",
-  "Me das ganas de bailar sin razón",
-  "Te quiero hasta cuando no estás",
-  "Sos más lindo que el cielo rosa",
-  "No existe otra persona como vos"
+      "Te amo", "Uy me tiré un pedo", "Está re lindo el día, viste?",
+      "Que ganas de tomar unos mates con vos", "Te extraño", "Me gustan mucho tus abrazos",
+      "Sos re lindo", "Soñé con vos", "Me da ternura cómo hablás",
+      "Quiero dormir la siesta abrazada a vos", "Me das paz", "Estás en todas mis playlists",
+      "Me hacés bien", "Ojalá estuvieras acá", "Me haces reír hasta cuando estoy triste",
+      "Me hace feliz que existas", "Hoy vi algo y pensé en vos", "Tengo antojo de vos",
+      "Sos como una torta frita recién salida de freirse :D", "Te invitaría a ver los Simpson y abrazarnos",
+      "Me hacés sentir como si todo fuera posible", "Quiero cocinarte algo rico", "Me das ganas de hacer cosas prohibidas con vos",
+      "Me encanta jugar al pool con vos", "Me re gustás, no sé si te lo dije hoy", "Me das calorcito en el pecho",
+      "Ojalá pudiera darte un beso ahora", "Sos un sol con piernas (este lo inventó chatgpt)",
+      "Que ganas de que comamos locro", "Unas ganas de que recorramos la patagonia en el azulejo",
+      "Sos como una mantita en invierno", "No me canso de hablar con vos", "A veces me dan ganas de llorar de lo mucho que te quiero",
+      "Estás en mi top 1 de cosas favoritas", "Sos mi lugar seguro", "Te llevaría en una mochila a todos lados",
+      "Me encanta cuando decís pavadas", "Sos mi persona preferida para existir", "Me hacés sentir suave",
+      "Si fueras un color, serías el más lindo", "Quiero reírme con vos hasta que nos duela la panza",
+      "Sos mi casita", "Me haces sentir como si estuviera en casa", "Pensarte me cambia el día",
+      "Sos tan abrazable que no sé cómo no sos un peluche", "Me das ganas de bailar sin razón",
+      "Te quiero hasta cuando no estás", "Sos más lindo que el cielo rosa", "No existe otra persona como vos"
     ];
 
-  // Función para mostrar frases aleatorias
     function mostrarFrase() {
       const frase = frases[Math.floor(Math.random() * frases.length)];
       document.getElementById("frase").innerText = frase;
     }
 
-  // Función para calcular días desde una fecha especial
     function actualizarContador() {
-      const fechaInicio = new Date('2022-01-7'); // ¡Cambia esta fecha por tu fecha especial!
+      const fechaInicio = new Date('2022-01-07');
       const hoy = new Date();
       const diferencia = hoy - fechaInicio;
       const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      
       document.getElementById("contador-dias").innerText = `❤️ ${dias} días juntos ❤️`;
     }
 
-    // Inicializar
+    // Imágenes locales dentro de la carpeta "imagenes/"
+    const imagenes = [
+      'imagenes/img1.jpg',
+      'imagenes/img2.jpg',
+      'imagenes/img3.jpg'
+    ];
+
+    document.getElementById('sorprendeteBtn').addEventListener('click', () => {
+      const indexAleatorio = Math.floor(Math.random() * imagenes.length);
+      const rutaImagen = imagenes[indexAleatorio];
+      const imgTag = document.getElementById('imagenAleatoria');
+      imgTag.src = rutaImagen;
+      document.getElementById('imagenContainer').style.display = 'flex';
+    });
+
+    function cerrarImagen() {
+      document.getElementById('imagenContainer').style.display = 'none';
+    }
+
     window.onload = function() {
       mostrarFrase();
       actualizarContador();
@@ -159,3 +176,4 @@
   </script>
 </body>
 </html>
+
