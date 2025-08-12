@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hola mugrosa</title>
+  <style>
+    html,body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #bdbdbd; /* gris */
+    }
+
+    .container {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin: 10px 0 30px;
+      font-size: 4rem;
+      letter-spacing: 2px;
+      text-transform: none;
+      color: #111;
+    }
+
+    .btn {
+      background: #ffd400; /* amarillo */
+      color: #000; /* letras negras */
+      border: none;
+      padding: 18px 28px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Recuadro blanco que aparecerá en posición aleatoria */
+    .random-box {
+      position: absolute;
+      background: #ffffff;
+      color: #000;
+      padding: 18px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      max-width: 420px;
+      width: min(90vw, 420px);
+      z-index: 9999;
+    }
+
+    .random-box h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .phrases {
+      margin: 8px 0 12px;
+      padding: 0;
+      list-style: none;
+      max-height: 320px;
+      overflow: auto;
+    }
+
+    .phrases li {
+      margin: 6px 0;
+      line-height: 1.25;
+    }
+
+    .random-box img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    /* Responsivo */
+    @media (max-width: 480px) {
+      h1 { font-size: 2.2rem; text-align: center; }
+      .btn { padding: 14px 20px; font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>hola mugrosa</h1>
+    <button class="btn" id="apreta">APRETÁ ACA</button>
+  </div>
+
+  <script>
+    // Array con 20 frases (inspiradas en los ejemplos)
+    const frases = [
+      "Tenés olor a pata",
+      "Anda a bañarte",
+      "Sos un chancho",
+      "Puerco con olor a poto",
+      "Huele a gato abandonado",
+      "Parecés un desastre",
+      "Lavate que estás hecho un queso",
+      "Sos un descuidado/a",
+      "Tu olor debería tener etiqueta de advertencia",
+      "Ducha urgente, por favor",
+      "Parecés salido/a del basurero",
+      "Dejá de oler así",
+      "Dale, peinate y bañate",
+      "Te falta higiene básica",
+      "El olor te define hoy",
+      "No te acerques con ese aroma",
+      "Tenés olor a calcetín olvidado",
+      "Cuidado: aroma potente",
+      "Sos un criador/a de malos olores",
+      "Tu presencia viene con fragancia incluida"
+    ];
+
+    const boton = document.getElementById('apreta');
+
+    function crearCajaRandom() {
+      // Si hay una caja existente, eliminarla (para evitar muchas cajas)
+      const existente = document.querySelector('.random-box');
+      if (existente) existente.remove();
+
+      // Crear caja
+      const box = document.createElement('div');
+      box.className = 'random-box';
+
+      // Título dentro del recuadro (opcional)
+      const titulo = document.createElement('h3');
+      titulo.textContent = 'Mensajes aleatorios';
+      box.appendChild(titulo);
+
+      // Lista de frases
+      const ul = document.createElement('ul');
+      ul.className = 'phrases';
+
+      // Mezclar el array para que el orden sea aleatorio
+      const mezcladas = shuffleArray(frases.slice()); // copia y mezcla
+
+      // Agregar las 20 frases al recuadro (en caso de que haya menos, se muestran todas)
+      for (let i = 0; i < Math.min(20, mezcladas.length); i++) {
+        const li = document.createElement('li');
+        li.textContent = "- " + mezcladas[i];
+        ul.appendChild(li);
+      }
+      box.appendChild(ul);
+
+      // Insertar imagen (el usuario pidió "IMG_01")
+      // Nota: si tu archivo se llama IMG_01.png o .jpeg, cambialo acá.
+      const img = document.createElement('img');
+      img.src = 'IMG_01.jpg';
+      img.alt = 'IMG_01';
+      box.appendChild(img);
+
+      document.body.appendChild(box);
+
+      // Posicionar la caja en un lugar aleatorio dentro del viewport
+      posicionarCajaDentroViewport(box);
+    }
+
+    // Función para mezclar un array (Fisher-Yates)
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Posiciona la caja de forma aleatoria sin salirse del viewport
+    function posicionarCajaDentroViewport(box) {
+      // primero dejamos que el navegador calcule el tamaño
+      box.style.left = '0px';
+      box.style.top = '0px';
+
+      // usar requestAnimationFrame para asegurar medida correcta
+      requestAnimationFrame(() => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const rect = box.getBoundingClientRect();
+        const boxW = rect.width;
+        const boxH = rect.height;
+
+        // margen para que no quede pegado a los bordes
+        const margin = 10;
+
+        const maxLeft = Math.max(margin, vw - boxW - margin);
+        const maxTop = Math.max(margin, vh - boxH - margin);
+
+        const randomLeft = Math.floor(Math.random() * (maxLeft - margin + 1)) + margin;
+        const randomTop = Math.floor(Math.random() * (maxTop - margin + 1)) + margin;
+
+        box.style.left = randomLeft + 'px';
+        box.style.top = randomTop + 'px';
+      });
+    }
+
+    // Evento click
+    boton.addEventListener('click', crearCajaRandom);
+
+    // Permitir cerrar la caja con click derecho (opcional)
+    document.addEventListener('contextmenu', function(e) {
+      const box = document.querySelector('.random-box');
+      if (box) {
+        box.remove();
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
