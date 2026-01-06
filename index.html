@@ -2,186 +2,89 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Frases Mágicas</title>
+  <title>Buscador PJ</title>
+
+  <!-- Librería para leer CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
   <style>
-    h1 {
-      background-color: #FF9FF3;
-      padding: 15px 30px;
-      border-radius: 50px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      color: white;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-    
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #ffc0cb;
-      background-image: url('https://i.imgur.com/wqYqSvE.gif');
-      background-size: 150px;
-      background-repeat: repeat;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: white;
+      padding: 40px;
+    }
+
+    label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 300px;
+      padding: 8px;
+      font-size: 16px;
     }
 
     button {
-      padding: 15px 30px;
+      padding: 8px 16px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    #resultado {
+      margin-top: 30px;
       font-size: 18px;
-      color: white;
-      background-color: #ff69b4;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      transition: background-color 0.3s;
-      margin-top: 20px;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    #frase-container {
-      margin-top: 40px;
-      max-width: 80%;
-    }
-
-    #frase {
-      font-size: 24px;
-      color: #8b005d;
-      background-color: #e0e0e0 ;
-      padding: 15px 25px;
-      border-radius: 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      display: inline-block;
-      min-width: 50px;
-    }
-
-    #contador-dias {
-      font-size: 20px;
-      color: #8b005d;
-      background-color: #ff69b4;
-      padding: 10px 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      display: inline-block;
-    }
-
-    /* Botón SORPRENDETE */
-    #sorprendeteBtn {
-      background-color: #006400; /* verde oscuro */
-      margin-top: 10px;
-    }
-
-    /* Pantalla completa de imagen */
-    #imagenContainer {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    #imagenContainer img {
-      max-width: 100%;
-      max-height: 100%;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>💌 Frases mágicas para miamorcito💌</h1>
 
-  <button onclick="mostrarFrase()">Clickea acá bebé</button>
-  <button id="sorprendeteBtn">SORPRENDETE</button>
+  <label for="dni">
+    Inserte aqui su numero de documento sin puntos
+  </label>
 
-  <div id="frase-container">
-    <div id="frase"></div>
-  </div>
+  <input type="text" id="dni">
+  <button onclick="buscar()">Buscar</button>
 
-  <div id="contador-dias"></div>
-
-  <div id="imagenContainer" onclick="cerrarImagen()">
-    <img id="imagenAleatoria" src="" alt="Imagen aleatoria">
-  </div>
+  <div id="resultado"></div>
 
   <script>
-    const frases = [
-      "Te amo", "Uy me tiré un pedo", "Está re lindo el día, viste?",
-      "Que ganas de tomar unos mates con vos", "Te extraño", "Me gustan mucho tus abrazos",
-      "Sos re lindo", "Soñé con vos", "Me da ternura cómo hablás",
-      "Quiero dormir la siesta abrazada a vos", "Me das paz", "Estás en todas mis playlists",
-      "Me hacés bien", "Ojalá estuvieras acá", "Me haces reír hasta cuando estoy triste",
-      "Me hace feliz que existas", "Hoy vi algo y pensé en vos", "Tengo antojo de vos",
-      "Sos como una torta frita recién salida de freirse :D", "Te invitaría a ver los Simpson y abrazarnos",
-      "Me hacés sentir como si todo fuera posible", "Quiero cocinarte algo rico", "Me das ganas de hacer cosas prohibidas con vos",
-      "Me encanta jugar al pool con vos", "Me re gustás, no sé si te lo dije hoy", "Me das calorcito en el pecho",
-      "Ojalá pudiera darte un beso ahora", "Sos un sol con piernas (este lo inventó chatgpt)",
-      "Que ganas de que comamos locro", "Unas ganas de que recorramos la patagonia en el azulejo",
-      "Sos como una mantita en invierno", "No me canso de hablar con vos", "A veces me dan ganas de llorar de lo mucho que te quiero",
-      "Estás en mi top 1 de cosas favoritas", "Sos mi lugar seguro", "Te llevaría en una mochila a todos lados",
-      "Me encanta cuando decís pavadas", "Sos mi persona preferida para existir", "Me hacés sentir suave",
-      "Si fueras un color, serías el más lindo", "Quiero reírme con vos hasta que nos duela la panza",
-      "Sos mi casita", "Me haces sentir como si estuviera en casa", "Pensarte me cambia el día",
-      "Sos tan abrazable que no sé cómo no sos un peluche", "Me das ganas de bailar sin razón",
-      "Te quiero hasta cuando no estás", "Sos más lindo que el cielo rosa", "No existe otra persona como vos"
-    ];
+    let datos = [];
 
-    function mostrarFrase() {
-      const frase = frases[Math.floor(Math.random() * frases.length)];
-      document.getElementById("frase").innerText = frase;
-    }
-
-    function actualizarContador() {
-      const fechaInicio = new Date('2022-01-07');
-      const hoy = new Date();
-      const diferencia = hoy - fechaInicio;
-      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      document.getElementById("contador-dias").innerText = `❤️ ${dias} días juntos ❤️`;
-    }
-
-    // Imágenes locales dentro de la carpeta "imagenes/"
-    const imagenes = [
-      'imagenes/img1.jpg',
-      'imagenes/img2.jpg',
-      'imagenes/img3.jpg',
-       'imagenes/img4.jpg',
-       'imagenes/img5.jpg',
-       'imagenes/img6.jpg'
-    ];
-
-    document.getElementById('sorprendeteBtn').addEventListener('click', () => {
-      const indexAleatorio = Math.floor(Math.random() * imagenes.length);
-      const rutaImagen = imagenes[indexAleatorio];
-      const imgTag = document.getElementById('imagenAleatoria');
-      imgTag.src = rutaImagen;
-      document.getElementById('imagenContainer').style.display = 'flex';
+    Papa.parse("data.csv", {
+      download: true,
+      header: true,
+      complete: function(res) {
+        datos = res.data;
+      }
     });
 
-    function cerrarImagen() {
-      document.getElementById('imagenContainer').style.display = 'none';
-    }
+    function buscar() {
+      const dniIngresado = document.getElementById("dni").value.trim();
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "";
 
-    window.onload = function() {
-      mostrarFrase();
-      actualizarContador();
-    };
+      const fila = datos.find(d => d[Object.keys(d)[0]] === dniIngresado);
+
+      if (!fila) {
+        alert("No se encuentra afiliadx al PJ");
+        return;
+      }
+
+      const columnas = Object.keys(fila);
+
+      resultadoDiv.innerHTML = `
+        <p><strong>${columnas[1]}:</strong> ${fila[columnas[1]]}</p>
+        <p><strong>${columnas[2]}:</strong> ${fila[columnas[2]]}</p>
+        <p><strong>${columnas[3]}:</strong> ${fila[columnas[3]]}</p>
+      `;
+    }
   </script>
+
 </body>
 </html>
-
-
 
 
 
